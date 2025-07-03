@@ -29,6 +29,27 @@ class CheckinController extends Controller
         return view('checkin.detail', compact('reservation'));
     }
 
+    public function checkManual(Request $request)
+    {
+        $request->validate([
+            'kode_tiket' => 'required|string',
+        ]);
+
+        $reservation = Reservation::where('kode_tiket', $request->kode_tiket)
+                                 ->with(['user', 'event'])
+                                 ->first();
+
+        if (!$reservation) {
+            return redirect()->back()->with('error', 'Kode tiket tidak valid!');
+        }
+
+        $reservation->status = 'sudah_checkin';
+        $reservation->checkin_at = now();
+        $reservation->save();
+
+        return redirect()->back()->with('success', 'Check-in berhasil.');
+    }
+
     public function checkin(Reservation $reservation)
     {
         if ($reservation->isSudahCheckin()) {
@@ -37,6 +58,12 @@ class CheckinController extends Controller
 
         $reservation->checkIn();
 
-        return redirect()->back()->with('success', 'Check-in berhasil!');
+        return redirect()->route('checkin.detail', $reservation->id)
+                 ->with('success', 'Check-in berhasil!');
+    }
+
+    public function detail(Reservation $reservation)
+    {
+        return view('checkin.detail', compact('reservation'));
     }
 }

@@ -42,7 +42,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/checkin', [CheckinController::class, 'index'])->name('checkin.index');
 Route::post('/checkin/check', [CheckinController::class, 'check'])->name('checkin.check');
 Route::post('/checkin/{reservation}/checkin', [CheckinController::class, 'checkin'])->name('checkin.process');
-Route::get('/checkin/check', function () {
-    return redirect()->route('checkin.index')->with('error', 'Silakan isi kode tiket terlebih dahulu.');
-});
+Route::post('/checkin/checkManual', [CheckinController::class, 'checkManual'])->name('checkin.checked');
+Route::get('/checkin/detail/{reservation}', [CheckinController::class, 'detail'])->name('checkin.detail');
+// Route::get('/checkin/check', function () {
+//     return redirect()->route('checkin.index')->with('error', 'Silakan isi kode tiket terlebih dahulu.');
+// });
 require __DIR__.'/auth.php';

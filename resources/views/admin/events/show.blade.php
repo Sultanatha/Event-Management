@@ -19,7 +19,7 @@
                 <p class="text-gray-600 mb-4">{{ $event->deskripsi_event }}</p>
                 <div class="space-y-2">
                     <p><span class="font-medium">Date & Time:</span> {{ $event->tanggal_waktu->format('d M Y, H:i') }}</p>
-                    <p><span class="font-medium">Quota:</span> {{ $event->kuota_tersisa }}/{{ $event->kuota_maksimal }}</p>
+                    <p><span class="font-medium">Kuota:</span> {{ $event->total_reservasi }}/{{ $event->kuota_maksimal }}</p>
                     <p><span class="font-medium">Total Reservations:</span> {{ $event->total_reservasi }}</p>
                 </div>
             </div>
@@ -70,9 +70,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 @if(!$reservation->isSudahCheckin())
-                                    <form action="{{ route('admin.events.checkin', $event) }}" method="POST" class="inline">
+                                    <form action="{{ route('checkin.checked', $event) }}" method="POST" class="inline">
                                         @csrf
-                                        <input type="hidden" name="user_id" value="{{ $reservation->user_id }}">
+                                        <input type="hidden" name="kode_tiket" value="{{ $reservation->kode_tiket }}">
                                         <button type="submit" class="text-blue-600 hover:text-blue-900" onclick="return confirm('Check-in this user?')">
                                             Check-in
                                         </button>

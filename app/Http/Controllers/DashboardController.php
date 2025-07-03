@@ -22,7 +22,8 @@ class DashboardController extends Controller
         }else{
              $events = Event::where('tanggal_waktu', '>', now())
                           ->orderBy('tanggal_waktu', 'asc')
-                          ->get();
+                          ->get()
+                          ->filter(fn($event) => $event->sisa_kuota > 0);
             return view('events.index', compact('events'));
         }
     }
