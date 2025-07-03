@@ -6,11 +6,15 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\CheckinController;
 use App\Http\Controllers\DashboardController;
 
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 Route::get('/dashboard', function () {
     return redirect()->route('dashboard.index');
 })->name('dashboard');
 
-    Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::middleware('auth')->group(function () {
     
     // Admin only routes
