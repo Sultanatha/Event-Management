@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;    
 
 class CheckinController extends Controller
 {
@@ -21,6 +22,12 @@ class CheckinController extends Controller
         $reservation = Reservation::where('kode_tiket', $request->kode_tiket)
                                  ->with(['user', 'event'])
                                  ->first();
+
+        $userId = Auth::id();
+
+        if ($reservation->user_id !== $userId) {
+            return redirect()->back()->with('error', 'Kode tiket tidak valid!');
+        }
 
         if (!$reservation) {
             return redirect()->back()->with('error', 'Kode tiket tidak valid!');
